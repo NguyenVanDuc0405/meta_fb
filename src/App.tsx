@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AppProvider } from "@shopify/polaris";
 import enTranslations from "@shopify/polaris/locales/en.json";
 import CustomSkeletonPage from "./components/Skeleton/skeleton-page";
+import { useDocument } from "./hook/useDocument";
 
 const Home = React.lazy(() => import("./views/Home"));
 const BusinessHelpCenterPage = React.lazy(() => import("./views/business-help-center"));
@@ -14,6 +15,8 @@ const ConfirmPage = React.lazy(() => import("./views/confirm"));
 
 
 function App() {
+  useDocument("Privacy Policy");
+
   return (
     <AppProvider i18n={enTranslations}>
       <Router>

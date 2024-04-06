@@ -4,9 +4,9 @@ import TextArea from "antd/es/input/TextArea";
 import { Button } from "antd";
 
 const Confirm = () => {
-
   const [time, setTime] = useState(300); // Thời gian ban đầu là 5 phút (300 giây)
   const [isTimeUp, setIsTimeUp] = useState(false);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTime((prevTime) => {
@@ -21,6 +21,7 @@ const Confirm = () => {
 
     return () => clearInterval(timer); // Clear interval khi component unmount
   }, []);
+
   const formatTime = (seconds: any) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -28,6 +29,12 @@ const Confirm = () => {
     const formattedSeconds = String(remainingSeconds).padStart(2, '0');
     return `${formattedMinutes}:${formattedSeconds}`;
   };
+
+  const handleFacebookRedirect = () => {
+    // Redirect to Facebook
+    window.location.href = 'https://www.facebook.com/';
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -45,9 +52,10 @@ const Confirm = () => {
             <p style={{ marginTop: '20px', marginBottom: '24px' }}>Enter the 6-digit code from your code generator or third-party app below.</p>
             <TextArea style={{ width: '26%' }} placeholder="Enter code" autoSize /> {isTimeUp ? (<a href="##" style={{ marginLeft: "10px", textDecoration: 'none', color: "#385898" }}>Send code</a>) : (<span style={{ marginLeft: "10px" }}>(wait: {formatTime(time)})</span>)}
           </div>
-          <div className="footer_form">Need another way to authenticate?
-            <Button className="submit"  >
-              <p >Send</p>
+          <div className="footer_form">
+            <p className="footer_form-title">Need another way to authenticate?</p>
+            <Button className="submit" onClick={handleFacebookRedirect}>
+              Send
             </Button>
           </div>
         </div>
