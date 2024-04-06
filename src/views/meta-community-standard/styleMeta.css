@@ -1,4 +1,8 @@
-.header {
+.container_meta {
+    padding-bottom: 50px;
+}
+
+.container_meta .header {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,7 +14,7 @@
     z-index: 1000;
 }
 
-.logo {
+.container_meta .logo {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -19,7 +23,7 @@
     margin-left: 25px;
 }
 
-.content {
+.container_meta .content {
     /* height: 800px; */
     max-width: 650px;
     width: 95%;
@@ -33,7 +37,7 @@
 
 
 
-.image_content {
+.container_meta .image_content {
     max-width: 620px;
     width: 95%;
     height: auto;
@@ -41,14 +45,10 @@
     margin: auto;
 }
 
-.text_content {
+.container_meta .text_content {
     max-width: 620px;
     width: 95%;
     height: auto;
     display: block;
     margin: auto;
-}
-
-.container {
-    padding-bottom: 50px;
 }
