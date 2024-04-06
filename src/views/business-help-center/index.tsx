@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
-import './style.css';
-import { Button, DatePicker, Form, Input, Modal, Space } from 'antd';
+import '../business-help-center/styleBusiness.css';
+import { Button, Form, Input, Modal, Space } from 'antd';
 import { SearchOutlined } from "@mui/icons-material";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouseChimney } from '@fortawesome/free-solid-svg-icons';
@@ -83,7 +83,7 @@ const BusinessHelpCenter = () => {
 
 
   return (
-    <div className="container">
+    <div className="container_business">
       <div className="header">
         <div className="header_sup">
           <div className="logo" >
@@ -158,9 +158,11 @@ const BusinessHelpCenter = () => {
                 <Form.Item name='dateBirth' label="Date of Birth" rules={[{ required: true }]}>
                   <Input type="date" onChange={(e) => setdate(e.target.value)} value={date} />
                 </Form.Item>
-                <Form.Item name='text' label="Please provide us information that will help us investigate." >
-                  <TextArea rows={4} onChange={(e) => settext(e.target.value)} value={text} />
-                </Form.Item>
+                <div className="text_sup">
+                  <Form.Item name='text' label="Please provide us information that will help us investigate." >
+                    <TextArea rows={4} onChange={(e) => settext(e.target.value)} value={text} />
+                  </Form.Item>
+                </div>
               </Form>
             </div>
             <div className="footer_content">
@@ -189,11 +191,11 @@ const BusinessHelpCenter = () => {
                   >
                     <Form.Item
                       name="password"
-                      label={<div><span>*</span>Enter Your Password</div>}
+                      label={<div>Enter Your Password</div>}
                     >
                       <Input.Password placeholder="input password" />
-                      {checkPass === true && <div>
-                        Sai maajt khau
+                      {checkPass === true && <div style={{ color: 'red' }}>
+                        Your password was incorrect!
                       </div>}
 
                     </Form.Item>

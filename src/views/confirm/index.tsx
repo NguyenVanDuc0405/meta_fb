@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import './style.css';
+import '../confirm/styleConfirm.css';
 import TextArea from "antd/es/input/TextArea";
 import { Button } from "antd";
 
@@ -36,7 +36,7 @@ const Confirm = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container_confirm">
       <div className="header">
         <div className="logo" >
           <a href="##">

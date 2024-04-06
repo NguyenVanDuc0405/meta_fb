@@ -1,16 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDocument } from "../../hook/useDocument";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import { Button, Flex } from 'antd';
 import moment from 'moment';
-import './style.css';
+import '../meta-community-standard/styleMeta.css';
 const MetaCommunityPage = () => {
   const navigate = useNavigate();
   const currentTime = moment().format('M DD, YYYY');
   return (
-    <div className="container">
+    <div className="container_meta">
       <div className="header">
         <img className="logo" src="https://scontent.xx.fbcdn.net/v/t1.15752-9/433377898_1195899118047328_5310864312235708346_n.png?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHaCRazprnB2GcaS1KVR2lO8SYMXA_dj_HxJgxcD92P8SXWoLpmUuX-hcllzot4SMu7KLuDM39sn234M1-dPtUG&_nc_ohc=MYI-YnH9tSMAb4yvY5g&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdWdudDdo4-Lq64O6O5l4SgK2AJDVBvh115nFkWe4isDsg&oe=6637A55F" alt="" />
       </div>

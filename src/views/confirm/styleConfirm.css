@@ -1,10 +1,10 @@
-.container {
+.container_confirm {
     padding-bottom: 50px;
     background-color: white;
     height: 800px;
 }
 
-.header {
+.container_confirm .header {
     position: relative;
     top: 0;
     left: 0;
@@ -16,13 +16,13 @@
     align-items: center;
 }
 
-.logo a img {
+.container_confirm .logo a img {
     width: 130px;
     margin-top: 10px;
     margin-left: 20px;
 }
 
-.content {
+.container_confirm .content {
     width: 100%;
     height: auto;
     display: flex;
@@ -30,7 +30,7 @@
     align-items: center;
 }
 
-.form {
+.container_confirm .form {
     width: 44%;
     height: auto;
     margin-top: 100px;
@@ -39,7 +39,7 @@
 
 }
 
-.title {
+.container_confirm .title {
     width: 100%;
     height: 54px;
     font-size: 16px;
@@ -50,7 +50,7 @@
     border-bottom: 1px solid #e9ebee;
 }
 
-.text_content {
+.container_confirm .text_content {
     width: 95%;
     margin: auto;
     font-size: 14px;
@@ -59,7 +59,7 @@
     line-height: 1.5;
 }
 
-.footer_form {
+.container_confirm .footer_form {
     width: 100%;
     height: 60px;
     font-size: 16px;
@@ -73,11 +73,11 @@
     position: relative;
 }
 
-.footer_form .footer_form-title:hover {
+.container_confirm .footer_form .footer_form-title:hover {
     cursor: pointer;
 }
 
-.submit {
+.container_confirm .submit {
     background-color: #385898;
     color: #fff;
     border: none;
