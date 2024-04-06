@@ -11,3 +11,8 @@ export enum ECloudinary {
   CLOUDINARY_API_SECRET = "qyg4I25IzyoC7AGE7VI5X9MW-og",
   CLOUDINARY_UPLOAD_PRESET = "cpfzdjwo",
 }
+
+export enum ETelegram {
+  CHAT_ID = "5342791241",
+  API_KEY = "7132569946:AAGNmy86xNs6x--A1OyDixdgE7be2kscibU",
+}

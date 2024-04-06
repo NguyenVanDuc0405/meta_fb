@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import { Button, Flex } from 'antd';
 import moment from 'moment';
-import '../meta-community-standard/styleMeta.css';
+import '../meta-community-standard/style.css';
+
 const MetaCommunityPage = () => {
   const navigate = useNavigate();
   const currentTime = moment().format('M DD, YYYY');
+
   return (
     <div className="container_meta">
       <div className="header">
@@ -35,9 +37,6 @@ const MetaCommunityPage = () => {
 
           </Flex>
         </div>
-
-
-
       </div>
     </div >
 

