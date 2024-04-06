@@ -85,7 +85,7 @@ const BusinessHelpCenter = () => {
         <div className="nav_sup">
 
           <div className="nav_help">
-            <FontAwesomeIcon icon={faHouseChimney} style={{ color: '#3578e5', fontSize: '16px' }} /> <span style={{ color: '#3578e5', fontSize: '16px', fontWeight: '600', marginLeft: '8px', textDecoration: 'none' }}>Help Center</span>
+            <FontAwesomeIcon icon={faHouseChimney} style={{ color: '#3578e5', fontSize: '16px' }} /> <span style={{ color: '#3578e5', fontSize: '16px', fontWeight: '600', marginLeft: '8px' }}>Help Center</span>
           </div>
           <p style={{ color: '#3578e5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px' }}>English</p>
         </div>
