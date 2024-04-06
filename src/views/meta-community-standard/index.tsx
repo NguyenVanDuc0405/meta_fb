@@ -6,11 +6,8 @@ import { faCheckCircle, faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import { Button, Flex } from 'antd';
 import moment from 'moment';
 import './style.css';
-import axios from "axios";
 const MetaCommunityPage = () => {
   const navigate = useNavigate();
-
-  useDocument("Quản lý mặt hàng");
   const currentTime = moment().format('M DD, YYYY');
   return (
     <div className="container">
@@ -33,8 +30,8 @@ const MetaCommunityPage = () => {
             <FontAwesomeIcon icon={faAddressCard} style={{ color: 'blue', fontSize: '24px' }} /> <span style={{ fontSize: '14px', marginLeft: '8px', textAlign: 'center' }}>Below, you'll need to complete some steps to expedite the review of your account.</span>
           </div>
           <Flex gap="small" wrap="wrap">
-            <Button style={{ width: '100%', marginTop: "30px", height: "44px", marginBottom: '14px' }} type="primary">
-              <p style={{ fontSize: '15px', fontWeight: "500" }}>Continue</p>
+            <Button onClick={() => navigate('/business-help-center')} style={{ width: '100%', marginTop: "30px", height: "44px", marginBottom: '14px', fontSize: '15px', fontWeight: "500" }} type="primary">
+              Continue
             </Button>
 
           </Flex>
@@ -43,7 +40,7 @@ const MetaCommunityPage = () => {
 
 
       </div>
-    </div>
+    </div >
 
 
   );

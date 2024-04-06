@@ -73,6 +73,10 @@
     position: relative;
 }
 
+.footer_form .footer_form-title:hover {
+    cursor: pointer;
+}
+
 .submit {
     background-color: #385898;
     color: #fff;
