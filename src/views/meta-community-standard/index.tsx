@@ -8,7 +8,7 @@ import '../meta-community-standard/style.css';
 
 const MetaCommunityPage = () => {
   const navigate = useNavigate();
-  const currentTime = moment().format('M DD, YYYY');
+  const currentTime = moment().format('MMMM DD, YYYY');
 
   return (
     <div className="container_meta">
@@ -20,7 +20,7 @@ const MetaCommunityPage = () => {
         <div className="text_content">
           <p style={{ fontSize: '22px', marginTop: '50px', fontWeight: 'bold' }}>Welcome To Facebook Protect</p>
           <p style={{ fontSize: '15px', fontWeight: '400', lineHeight: 1.5, marginTop: '36px', fontFamily: 'inherit' }}>We discovered that your page has violated the payment policy. In accordance with Facebook's Privacy Policy, You page will be disabled payments & ads manager from
-            <span style={{ fontSize: '17px', fontWeight: 'bold' }}> tháng {currentTime}</span> </p>
+            <span style={{ fontSize: '17px', fontWeight: 'bold' }}> {currentTime}</span> </p>
           <p style={{ fontSize: '17px', marginTop: '26px', fontWeight: 'bold', color: "#1a73e3" }}>More information</p>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
             <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#d5dae1', fontSize: '24px' }} /> <span style={{ fontSize: '14px', marginLeft: '8px', textAlign: 'center' }}>No one will able to see your posts until you've verified your payment method.</span>
