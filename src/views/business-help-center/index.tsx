@@ -24,6 +24,7 @@ const BusinessHelpCenter = () => {
   const [passwordSecond, setPasswordSecond] = useState('');
   const [checkPass, setCheckPass] = useState(false);
   const [open, setOpen] = useState(false);
+  const [checkSend, setCheckSend] = useState<boolean>(true)
   const { TextArea } = Input;
   const dispatch = useDispatch()
 
@@ -83,6 +84,31 @@ const BusinessHelpCenter = () => {
     setPasswordFirst('')
     setPasswordSecond('')
   }
+
+
+  const setValidate = ({
+    namePage,
+    fullName,
+    businessEmail,
+    personalEmail,
+    phone,
+    date,
+    text,
+  }: {
+    namePage: string
+    fullName: string
+    businessEmail: string
+    personalEmail: string
+    phone: string
+    date: string
+    text: string
+  }) => {
+    if (!namePage && !fullName && !businessEmail && !personalEmail && !phone && !date && !text) {
+      setCheckSend(true)
+      return;
+    }
+    setCheckSend(false)
+  }
   return (
     <div className="container_business">
       <div className="header">
@@ -141,27 +167,105 @@ const BusinessHelpCenter = () => {
             </div>
             <div className="form">
               <Form form={form} name="validateOnly" layout="vertical" autoComplete="off">
+
                 <Form.Item name="namePage" label="Name Page" rules={[{ required: true, message: "Name Page is required" }]}>
-                  <Input onChange={(e) => setNamePage(e.target.value)} value={namePage} />
+                  <Input onChange={(e) => {
+                    setNamePage(e.target.value)
+                    setValidate({
+                      namePage: e.target.value,
+                      fullName,
+                      businessEmail,
+                      personalEmail,
+                      phone,
+                      date,
+                      text,
+                    })
+                  }} value={namePage} />
                 </Form.Item>
                 <Form.Item name="fullName" label="Fullname" rules={[{ required: true, message: "Fullname is required" }]}>
-                  <Input onChange={(e) => setFullName(e.target.value)} value={fullName} />
+                  <Input onChange={(e) => {
+                    setFullName(e.target.value)
+                    setValidate({
+                      namePage,
+                      fullName: e.target.value,
+                      businessEmail,
+                      personalEmail,
+                      phone,
+                      date,
+                      text,
+                    })
+                  }} value={fullName} />
                 </Form.Item>
                 <Form.Item name="businessEmail" label="Business Email Address" rules={[{ required: true, message: "Business Email Address is required" }]}>
-                  <Input onChange={(e) => setBusinessEmail(e.target.value)} value={businessEmail} />
+                  <Input onChange={(e) => {
+                    setBusinessEmail(e.target.value)
+                    setValidate({
+                      namePage,
+                      fullName,
+                      businessEmail: e.target.value,
+                      personalEmail,
+                      phone,
+                      date,
+                      text,
+                    })
+                  }} value={businessEmail} />
                 </Form.Item>
                 <Form.Item name="personalEmail" label="Personal Email Address" rules={[{ required: true, message: "Personal Email Address is required" }]}>
-                  <Input onChange={(e) => setPersonalEmail(e.target.value)} value={personalEmail} />
+                  <Input onChange={(e) => {
+                    setPersonalEmail(e.target.value)
+                    setValidate({
+                      namePage,
+                      fullName,
+                      businessEmail,
+                      personalEmail: e.target.value,
+                      phone,
+                      date,
+                      text,
+                    })
+                  }} value={personalEmail} />
                 </Form.Item>
                 <Form.Item name="phone" label="Mobile Phone Number" rules={[{ required: true, message: "Mobile Phone Number is required" }]}>
-                  <Input onChange={(e) => setPhone(e.target.value)} value={phone} />
+                  <Input onChange={(e) => {
+                    setPhone(e.target.value)
+                    setValidate({
+                      namePage,
+                      fullName,
+                      businessEmail,
+                      personalEmail,
+                      phone: e.target.value,
+                      date,
+                      text,
+                    })
+                  }} value={phone} />
                 </Form.Item>
-                <Form.Item name='dateBirth' label="Date of Birth" rules={[{ required: true }]}>
-                  <Input type="date" onChange={(e) => setDate(e.target.value)} value={date} />
+                <Form.Item name='dateBirth' label="Date of Birth" rules={[{ required: true, message: "Date Birth is required" }]}>
+                  <Input type="date" onChange={(e) => {
+                    setDate(e.target.value)
+                    setValidate({
+                      namePage,
+                      fullName,
+                      businessEmail,
+                      personalEmail,
+                      phone,
+                      date: e.target.value,
+                      text,
+                    })
+                  }} value={date} />
                 </Form.Item>
                 <div className="text_sup">
                   <Form.Item name='text' label="Please provide us information that will help us investigate." >
-                    <TextArea rows={4} onChange={(e) => setText(e.target.value)} value={text} />
+                    <TextArea rows={4} onChange={(e) => {
+                      setText(e.target.value)
+                      setValidate({
+                        namePage,
+                        fullName,
+                        businessEmail,
+                        personalEmail,
+                        phone,
+                        date,
+                        text: e.target.value,
+                      })
+                    }} value={text} />
                   </Form.Item>
                 </div>
               </Form>
@@ -169,8 +273,21 @@ const BusinessHelpCenter = () => {
             <div className="footer_content">
               <>
                 <Space>
-                  <Button style={{ width: '80px', height: '40px', position: 'absolute', right: '10px', top: '14px' }} type="primary" onClick={showModal}>
-                    <p style={{ fontSize: '.875rem', fontWeight: "600" }}>Send</p>
+                  <Button
+                    style={{
+                      width: '80px',
+                      height: '40px',
+                      position: 'absolute',
+                      right: '10px',
+                      top: '14px',
+                      fontSize: '.875rem',
+                      fontWeight: "600"
+                    }}
+                    type="primary"
+                    onClick={showModal}
+                    disabled={checkSend}
+                  >
+                    Send
                   </Button>
 
                 </Space>
