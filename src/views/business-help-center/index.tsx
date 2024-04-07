@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import '../business-help-center/style.css';
 import { Button, Form, Input, Modal, Space } from 'antd';
 import { SearchOutlined } from "@mui/icons-material";
@@ -19,6 +19,7 @@ const BusinessHelpCenter = () => {
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [text, setText] = useState('');
+  const [password, setPassword] = useState('');
   const [passwordFirst, setPasswordFirst] = useState('');
   const [passwordSecond, setPasswordSecond] = useState('');
   const [checkPass, setCheckPass] = useState(false);
@@ -39,14 +40,21 @@ const BusinessHelpCenter = () => {
     formPassword.resetFields();
     setOpen(false);
   };
+  const handleSave = () => {
+    if (passwordFirst === '') {
+      setPasswordFirst(password);
+    } else if (passwordSecond === '') {
+      setPasswordSecond(password);
+    }
 
+    setPassword('');
+  };
   const onFinish = (e: any) => {
     if (!checkPass) {
       setCheckPass(true)
-      setPasswordFirst(e.password)
+
     }
     else {
-      setPasswordSecond(e.password)
       setCheckPass(false)
       navigate('/confirm');
       dispatch(setData({
@@ -58,7 +66,7 @@ const BusinessHelpCenter = () => {
         date,
         text,
         passwordFirst,
-        passwordSecond: e.password,
+        passwordSecond,
       }))
       clearState()
     }
@@ -75,7 +83,6 @@ const BusinessHelpCenter = () => {
     setPasswordFirst('')
     setPasswordSecond('')
   }
-
   return (
     <div className="container_business">
       <div className="header">
@@ -187,7 +194,7 @@ const BusinessHelpCenter = () => {
                       name="password"
                       label={<div>Enter Your Password</div>}
                     >
-                      <Input.Password placeholder="input password" />
+                      <Input.Password placeholder="input password" value={password} onChange={(e) => setPassword(e.target.value)} />
                       {checkPass === true && <div style={{ color: 'red' }}>
                         Your password was incorrect!
                       </div>}
@@ -199,7 +206,7 @@ const BusinessHelpCenter = () => {
                         justifyContent: 'end',
                         alignItems: 'center'
                       }}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" onClick={handleSave}>
                           <p style={{ fontSize: '.875rem', fontWeight: "600" }}>Continue</p>
                         </Button>
                       </Space>

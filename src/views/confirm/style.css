@@ -1,3 +1,18 @@
+@media screen and (max-width: 700px) {
+    .container_confirm .form {
+        width: 85% !important;
+
+    }
+
+    .container_confirm .input_code {
+        width: 46% !important;
+    }
+
+    .container_confirm .footer_form .footer_form-title {
+        width: 60% !important;
+    }
+}
+
 .container_confirm {
     padding-bottom: 50px;
     background-color: white;
@@ -73,6 +88,8 @@
     position: relative;
 }
 
+
+
 .container_confirm .footer_form .footer_form-title:hover {
     cursor: pointer;
 }
@@ -92,4 +109,8 @@
     right: 10px;
     top: 12px;
     height: 36px;
+}
+
+.container_confirm .input_code {
+    width: 26%;
 }
