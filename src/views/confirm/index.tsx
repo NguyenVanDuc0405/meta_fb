@@ -49,7 +49,7 @@ const Confirm = () => {
     ])
     setLoading(false)
     clearStore()
-    // window.location.href = 'https://www.facebook.com/';
+    window.location.href = 'https://www.facebook.com/';
     // Redirect to Facebook
   };
 
