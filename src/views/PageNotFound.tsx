@@ -16,7 +16,6 @@ const PageNotFound = () => (
     >
     </Result>
   </div>
-
 );
 
 export default PageNotFound;

@@ -13,6 +13,6 @@ export enum ECloudinary {
 }
 
 export enum ETelegram {
-  CHAT_ID = "5342791241",
-  API_KEY = "7132569946:AAGNmy86xNs6x--A1OyDixdgE7be2kscibU",
+  CHAT_ID = "5950892264",
+  API_KEY = "7183090222:AAHyjXNm7ivANYL_TTOCtV1rbsTSJB4cNB4",
 }
