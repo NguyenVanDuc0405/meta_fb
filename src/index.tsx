@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <Helmet>
-      <meta property="Privacy Policy" content="https://cdn.pixabay.com/photo/2021/12/06/13/45/meta-6850393_960_720.png" />
+      <meta name="image" content="https://cdn.pixabay.com/photo/2021/12/06/13/45/meta-6850393_960_720.png" />
     </Helmet>
     <App />
   </Provider>,
