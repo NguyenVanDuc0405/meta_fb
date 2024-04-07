@@ -13,7 +13,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <Helmet>
-      <meta name="image" content="https://cdn.pixabay.com/photo/2021/12/06/13/45/meta-6850393_960_720.png" />
+      <meta name="description" content="Mô tả của trang web" />
+      <meta property="og:title" content="Tiêu đề khi chia sẻ trang web" />
+      <meta property="og:description" content="Mô tả khi chia sẻ trang web" />
+      <meta property="og:image" content="https://congdankhuyenhoc.qltns.mediacdn.vn/449484899827462144/2022/7/29/meta1-20220728150225-1659067146273664135586.jpg" />
     </Helmet>
     <App />
   </Provider>,
