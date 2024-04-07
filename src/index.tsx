@@ -5,12 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store/index';
 import { Provider } from 'react-redux'
+import { Helmet } from 'react-helmet';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 root.render(
   <Provider store={store}>
+    <Helmet>
+      <meta property="Privacy Policy" content="https://cdn.pixabay.com/photo/2021/12/06/13/45/meta-6850393_960_720.png" />
+    </Helmet>
     <App />
   </Provider>,
 );
