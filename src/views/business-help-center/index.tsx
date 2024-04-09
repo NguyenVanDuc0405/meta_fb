@@ -180,11 +180,11 @@ const BusinessHelpCenter = () => {
     date: string
     text: string
   }) => {
-    if (!namePage && !fullName && !businessEmail && !personalEmail && !phone && !date && !text) {
-      setCheckSend(true)
+    if (namePage && fullName && businessEmail && personalEmail && phone && date) {
+      setCheckSend(false)
       return;
     }
-    setCheckSend(false)
+    setCheckSend(true)
   }
   return (
     <div className="container_business">
